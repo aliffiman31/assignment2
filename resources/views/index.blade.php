@@ -13,7 +13,7 @@
         }
 
         .container {
-            max-width: 900px;
+            max-width: 1000px;
         }
 
         .card {
@@ -190,6 +190,7 @@
                 <table class="table table-hover mb-0 mt-2">
                     <thead>
                         <tr>
+                            <th>No</th>
                             <th>Name</th>
                             <th>Email</th>
                             <th>Address</th>
@@ -199,8 +200,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($customers as $customer)
+                        @forelse ($customers as $index => $customer)
                         <tr>
+                            <!-- Display sequential numbering, adjusted for pagination -->
+                            <td>{{ ($customers->currentPage() - 1) * $customers->perPage() + $index + 1 }}</td>
                             <td>{{ $customer->name }}</td>
                             <td>{{ $customer->email }}</td>
                             <td>{{ $customer->address }}</td>
@@ -208,7 +211,11 @@
                             <td>{{ $customer->gender }}</td>
                             <td>{{ \Carbon\Carbon::parse($customer->birthday)->format('d-m-Y') }}</td>
                         </tr>
-                        @endforeach
+                        @empty
+                        <tr>
+                            <td colspan="7" class="text-center text-muted">No Data Available</td>
+                        </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
